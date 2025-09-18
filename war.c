@@ -31,7 +31,7 @@
 
 // --- Função Principal (main) ---
 // Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
-int main() {
+//int main() {
     // 1. Configuração Inicial (Setup):
     // - Define o locale para português.
     // - Inicializa a semente para geração de números aleatórios com base no tempo atual.
@@ -51,8 +51,8 @@ int main() {
     // 3. Limpeza:
     // - Ao final do jogo, libera a memória alocada para o mapa para evitar vazamentos de memória.
 
-    return 0;
-}
+//    return 0;
+//}
 
 // --- Implementação das Funções ---
 
@@ -96,3 +96,82 @@ int main() {
 
 // limparBufferEntrada():
 // Função utilitária para limpar o buffer de entrada do teclado (stdin), evitando problemas com leituras consecutivas de scanf e getchar.
+
+
+//feito por matheus dirceu neri orfeu994
+// WAR.c
+// Programa para gerenciar informações de territórios em um jogo de WAR
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Define o comando para limpar a tela dependendo do sistema operacional
+#ifdef _WIN32
+#define CLEAR "cls"
+#else
+#define CLEAR "clear"
+#endif
+
+#define NUM_TERRITORIOS 5 // Define o número de territórios
+
+// Estrutura para armazenar informações de um território
+typedef struct {
+    char nome[30];
+    char cor[10];
+    int tropas;
+} Territorio;
+
+// limpeza de buffer
+void limparBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+
+// Função principal
+// Permite ao usuário inserir dados para vários territórios e exibi-los
+//
+int main() {
+    int i;
+
+// Aloca memória para os territórios
+    Territorio* territorios = (Territorio*)malloc(NUM_TERRITORIOS * sizeof(Territorio));
+    if (territorios == NULL) {
+        fprintf(stderr, "Erro ao alocar memoria.\n");
+        return 1;
+    }
+
+    // Preenche os dados dos territorios
+    for (i = 0; i < NUM_TERRITORIOS; i++) {
+        system(CLEAR); // Limpa a tela antes de cada entrada
+        printf("Digite o nome do territorio %d: ", i + 1);
+        fgets(territorios[i].nome, sizeof(territorios[i].nome), stdin);
+        territorios[i].nome[strcspn(territorios[i].nome, "\n")] = 0;
+
+        printf("Digite a cor do territorio (EX: Azul e Verde) %d: ", i + 1);
+        fgets(territorios[i].cor, sizeof(territorios[i].cor), stdin);
+        territorios[i].cor[strcspn(territorios[i].cor, "\n")] = 0;
+
+        printf("Digite o numero de tropas no territorio %d: ", i + 1);
+        scanf("%d", &territorios[i].tropas);
+        limparBuffer();
+    }
+
+    system(CLEAR); // Limpa a tela antes de exibir os resultados
+
+    printf("\n--------------------------------\n");
+    printf("\n--- Detalhes dos Territorios ---\n");
+    for (i = 0; i < NUM_TERRITORIOS; i++) {
+        printf("Territorio %d:\n", i + 1);
+        printf("Nome: %s\n", territorios[i].nome);
+        printf("Cor: %s\n", territorios[i].cor);
+        printf("Numero de Tropas: %d\n\n", territorios[i].tropas);
+        printf("--------------------------------\n");
+    }
+
+    free(territorios);
+    return 0;
+}
+
+
+
